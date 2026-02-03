@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<元名称=“视口”内容=“宽度=设备宽度，初始比例=1.0”>
+<title>校园表白墙</title>
+<style>
+* {
+页边距：0；
+填充：0；
+框大小：边框框；
+字体系列：“Microsoft Yahei”，无衬线；
+        }
+
+正文{
+背景色：#f5f7fa；
+填料：20px；
+位置：相对；
+        }
+
+.container{
+最大宽度：800px；
+页边距：0自动；
+        }
+
+/* 新增：最高权限入口 - 左上角 */
+.admin-entrance{
+位置：固定；
+top:20px；
+左：20px；
+Z指数：9998；
+背景：#333；
+颜色：#FFF；
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        /* 密码弹窗 */
+        .admin-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-box {
+            background: #fff;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 25px 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .admin-box .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e63946;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .admin-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            outline: none;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .admin-box .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .admin-box button {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .admin-box .cancel {
+            background: #eee;
+            color: #666;
+        }
+        .admin-box .cancel:hover {
+            background: #ddd;
+        }
+        .admin-box .confirm {
+            background: #e63946;
+            color: #fff;
+        }
+        .admin-box .confirm:hover {
+            background: #d62839;
+        }
+        /* 权限解锁后显示删除按钮 */
+        .admin-active .del-btn {
+            display: block !important;
+        }
+
+        /* 公告弹窗样式 */
+        .notice-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .notice-box {
+            background: #fff;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .notice-box .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e63946;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .notice-box .content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .notice-box .confirm {
+            width: 100%;
+            padding: 10px 0;
+            background: #e63946;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .notice-box .confirm:hover {
+            background: #d62839;
+        }
+
+        /* 顶部导航 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #e63946;
+        }
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 发布区 */
+        .publish {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        .publish input, .publish textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            outline: none;
+            font-size: 14px;
+            resize: none;
+        }
+        .publish input::placeholder, .publish textarea::placeholder {
+            color: #999;
+        }
+        .publish textarea {
+            height: 100px;
+        }
+        .publish button {
+            background: #e63946;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .publish button:hover {
+            background: #d62839;
+        }
+
+        /* 筛选区 */
+        .filter {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .filter button {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .filter button:hover {
+            border-color: #e63946;
+            color: #e63946;
+        }
+
+        /* 表白列表 */
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        /* 新增：表白删除按钮 */
+        .card .del-card {
+            display: none;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .card .nickname {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .card .time {
+            font-size: 12px;
+            color: #999;
+            font-weight: normal;
+        }
+        .card .content {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        /* 点赞+评论按钮区 */
+        .card .operate {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .card .like, .card .comment-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .card .like i, .card .comment-btn i {
+            color: #999;
+        }
+        .card .like.active i, .card .like.active,
+        .card .comment-btn:hover i, .card .comment-btn:hover {
+            color: #e63946;
+        }
+
+        /* 评论区 */
+        .card .comment-area {
+            width: 100%;
+        }
+        .card .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .card .comment-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            outline: none;
+            font-size: 13px;
+        }
+        .card .comment-input button {
+            padding: 8px 15px;
+            background: #e63946;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.3s;
+        }
+        .card .comment-input button:hover {
+            背景：#d62839；
+        }
+
+        /* 评论列表 */
+        .卡片 .comment-list {
+            显示: 弯曲;
+            挠曲方向: 柱;
+            差距: 10PX;
+            最大高度: 200PX;
+            溢流y: 自动;
+            右边填充: 5PX;
+        }
+        .卡片 .comment-item {
+            字体大小: 13PX;
+            填充: 8PX 10PX;
+            背景：#f8f9fa；
+            边界半径: 6PX;
+            位置: 相对的;
+            显示: 弯曲;
+            挠曲方向: 柱;
+        }
+        /* 新增：评论删除按钮 */
+        .卡片 .comment-item .del-comment {
+            显示: 没有一个;
+            位置: 绝对的;
+            顶端: 5PX;
+            正确的: 8PX;
+            颜色：#ff4444；
+            光标: 指针;
+            字体大小: 12PX;
+        }
+        .卡片 .comment-item .用户文本 {
+            显示: 弯曲;
+            对齐项目: 基准;
+            差距: 8PX;
+        }
+        .卡片 .comment-item .用户 {
+            字体粗细: 大胆的;
+            颜色: #333;
+        }
+        .卡片 .comment-item .文本 {
+            颜色: #666;
+            弯曲: 1;
+        }
+        .卡片 .comment-item .评论时间 {
+            字体大小: 11PX;
+            color: #999;
+            margin-top: 3px;
+            display: block;
+            padding-left: calc(1em + 8px);
+        }
+
+        /* 空状态 */
+        .empty {
+            text-align: center;
+            padding: 50px 0;
+            color: #999;
+            font-size: 14px;
+        }
+        .empty i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .comment-empty {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .admin-entrance {
+                top: 10px;
+                left: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 12px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .publish {
+                padding: 15px;
+            }
+            .card {
+                padding: 15px;
+            }
+            .notice-box {
+                padding: 20px 15px;
+            }
+            .admin-box {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+    <!-- 字体图标（爱心/评论/公告/删除/管理） -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body id="appBody">
+    <!-- 新增：左上角最高权限入口 -->
+    <div class="admin-entrance" onclick="showAdminPwd()">
+        <i class="fas fa-shield-halved"></i>
+    </div>
+    <!-- 新增：管理员密码弹窗 -->
+    <div class="admin-mask" id="adminMask">
+        <div class="admin-box">
+            <div class="title">管理员验证</div>
+            <input type="password" id="adminPwd" placeholder="请输入管理员密码">
+            <div class="btn-group">
+                <button class="cancel" onclick="hideAdminPwd()">取消</button>
+                <button class="confirm" onclick="checkAdminPwd()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公告弹窗 -->
+    <div class="notice-mask" id="noticeMask">
+        <div class="notice-box">
+            <div class="title">
+                <i class="fas fa-bullhorn"></i>城东初中表白墙公告
+            </div>
+            <div class="content">
+                1. 本表白墙为城东校园专属，禁止发布广告、辱骂、违法等不良内容；<br>
+                2. 请文明发言，理性互动，尊重他人隐私；<br>
+                3. 发布内容仅做展示，请勿轻信陌生信息，谨防诈骗；<br>
+                4. 违规内容将被直接删除，感谢大家的遵守与支持！
+            </div>
+            <button class="confirm" onclick="closeNotice()">我知道了</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 顶部导航 -->
+        <div class="header">
+            <h1>本校园表白墙由城东大牛创作</h1>
+            <p>有什么就说，不留遗憾 ❤️</p>
+        </div>
+
+        <!-- 发布表白区 -->
+        <div class="publish">
+            <input type="text" id="nickname" placeholder="你的昵称（可匿名）">
+            <textarea id="content" placeholder="写下你的表白吧..."></textarea>
+            <button onclick="publish()">发布表白</button>
+        </div>
+
+        <!-- 筛选区 -->
+        <div class="filter">
+            <button onclick="clearAll()">清空所有</button>
+            <button onclick="showAll()">显示全部</button>
+        </div>
+
+        <!-- 表白列表区 -->
+        <div class="list" id="list">
+            <!-- 空状态 -->
+            <div class="empty" id="empty">
+                <i class="fas fa-heart-broken"></i>
+                还没有表白，快来成为第一个吧！
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 本地存储获取表白数据
+        let loveList = JSON.parse(localStorage.getItem('loveList')) || [];
+        const listDom = document.getElementById('list');
+        const emptyDom = document.getElementById('empty');
+        const noticeMask = document.getElementById('noticeMask');
+        const adminMask = document.getElementById('adminMask');
+        const appBody = document.getElementById('appBody');
+        const ADMIN_PWD = 'zzm'; // 最高权限密码
+
+        // 页面加载渲染列表
+        window.onload = function() {
+            renderList();
+        }
+
+        // 公告弹窗关闭
+        function closeNotice() {
+            noticeMask.style.display = 'none';
+        }
+
+        // 新增：显示管理员密码弹窗
+        function showAdminPwd() {
+            adminMask.style.display = 'flex';
+            document.getElementById('adminPwd').value = '';
+        }
+        // 新增：隐藏管理员密码弹窗
+        function hideAdminPwd() {
+            adminMask.style.display = 'none';
+        }
+        // 新增：验证管理员密码
+        function checkAdminPwd() {
+            const inputPwd = document.getElementById('adminPwd').value.trim();
+            if (inputPwd === ADMIN_PWD) {
+                appBody.classList.add('admin-active');
+                hideAdminPwd();
+                alert('管理员权限解锁成功！可删除表白/评论');
+            } else {
+                alert('密码错误！请重新输入');
+                document.getElementById('adminPwd').value = '';
+            }
+        }
+
+        // 发布表白
+        function publish() {
+            const nickname = document.getElementById('nickname').value.trim() || '匿名同学';
+            const content = document.getElementById('content').value.trim();
+            if (!content) {
+                alert('表白内容不能为空哦！');
+                返回;
+            }
+            Const loveObj={
+                身份标识: 日期.现在(),
+                昵称,
+                内容,
+                时间: formatTime(),
+                喜欢: 0,
+                islike: 假的,
+                commentNum: 0,
+                评论: []
+            };
+            Lovelist.unshift(loveObj);
+            saveToLocal();
+            renderList();
+            文件.getElementById('昵称').价值='';
+            文件.getElementById('内容').价值='';
+        }
+
+        // 渲染表白列表（含评论+删除按钮）
+        功能 renderList() {
+            如果 (Lovelist.长度===0) {
+                listDom.innerHTML='<div class="empty"id="empty"><i class="fas-fa-chart-broken"></i>还没有表白，快来成为第一个吧！</div>';
+                返回;
+            }
+            让 超文本标记语言='';
+            Lovelist.foreach(项=>{
+                // 渲染评论列表（含评论删除按钮）
+                让 commentHtml='';
+                如果 (项.评论.长度>0) {
+                    项.评论.foreach(厘米=>{
+                        commentHtml+=`
+<div class="comment-item"data-cid="${厘米.CID}">
+<i class="fas fa-times del-comment del-btn"onclick="delComment(${项.身份标识}, ${厘米.CID})"></i>
+<div class="user-text">
+<span class="user">${厘米.小鸡}</span>
+<span class="text">${厘米.CTEXT}</span>
+</div>
+<span class="comment-time">${厘米.ctime}</span>
+</div>
+`;
+                    });
+                } 其他 {
+                    commentHtml='<div class="comment-empty">暂无评论，快来抢沙发吧~</div>';
+                }
+
+                // 拼接表白卡片（含表白删除按钮）
+                超文本标记语言+=`
+<div class="卡"data-id="${项.身份标识}">
+<i class="fas fa-times del-card del-btn"onclick="delCard(${项.身份标识})"></i>
+<div class="nickname">
+                            ${项.昵称}
+<span class="time">${项.时间}</span>
+</div>
+<div class="content">${项.内容}</div>
+<div class="operate">
+<div class="like${项.islike ? '活动' : ''}"onclick="toggleLike(${项.身份标识})">
+<i class="fas fa-heart"></i>
+<span>${项.喜欢}</span>
+</div>
+<div class="comment-btn"onclick="showCommentInput(${项.身份标识})">
+<i class="fas fa-comment"></i>
+<span>${项.commentNum}</span>
+</div>
+</div>
+<div class="comment-area">
+<div class="comment-input">
+<输入类型="文本"占位符="你的昵称（可匿名）"class="c-nick"data-id="${项.身份标识}">
+<输入类型="文本"占位符="写下你的评论..."class="C-text"data-id="${项.身份标识}">
+<button onclick="publishComment(${项.身份标识})">发送</button>
+</div>
+<div class="comment-list">${commentHtml}</div>
+</div>
+</div>
+`;
+            });
+            listDom.innerHTML=超文本标记语言;
+        }
+
+        // 新增：删除单条表白
+        function delCard(cardId) {
+            if (confirm('确定要删除这条表白吗？删除后评论也会一并删除！')) {
+                loveList = loveList.filter(item => item.id !== cardId);
+                saveToLocal();
+                renderList();
+            }
+        }
+
+        // 新增：删除单条评论
+        function delComment(cardId, commentId) {
+            if (confirm('确定要删除这条评论吗？')) {
+                loveList = loveList.map(item => {
+                    if (item.id === cardId) {
+                        item.comments = item.comments.filter(cm => cm.cid !== commentId);
+                        item.commentNum = item.comments.length;
+                    }
+                    return item;
+                });
+                saveToLocal();
+                renderList();
+            }
+        }
+
+        // 点赞/取消点赞
+        function toggleLike(id) {
+            loveList = loveList.map(item => {
+                if (item.id === id) {
+                    item.like = item.isLike ? item.like - 1 : item.like + 1;
+                    item.isLike = !item.isLike;
+                }
+                return item;
+            
+CID
+renderList()；()；
+saveToLocal
+
+// 发布评论
+函数publishComment(id){(id){
+常数cNickDom=文件.QuerySelector('.c-nick[data-id="${id}"]')；=文件。querySelector('.c-nick[data-id="${id}"]')；
+Const cTextDom=文件。querySelector('.C-text[data-id="${id}"]')；cTextDom=文件。querySelector('.C-text[data-id="${id}"]')；
+Const cnick=cNickDom.value.trim()||'匿名网友'；cnick=cNickDom.value.trim()||'匿名网友'；
+Const CTEXT=cTextDom。价值。trim()；CTEXT=cTextDom。价值。修剪()；
+
+if(！CTEXT){(！CTEXT){
+警惕的('评论内容不能为空哦！ ')；('评论内容不能为空哦！ ')；
+返回；
+            }
+
+Const commentObj={commentObj={
+CID:Date.now()，：Date.now()，
+小妞，
+CTEXT，
+ctime:formatTime()
+            };
+
+Lovelist=loveList.map(项目=>{
+如果(项.身份标识===身份标识){
+脚本；项</脚本</
+}
+commentObj
+(renderListrenderList)；renderList()；项renderListrenderList)；renderList()；项
+>
+
+saveToLocal()；saveToLocal()；
+renderList项。评论。推送项。commentNum项.评论.长度；项.CommentNum=项.评论.长度；=)；项目.评论.推(commentObj)；)；renderList()；
+cNickDom.价值="；cNickDom.value="；.价值=cTextDom。价值="；cTextDom.value="；
+cTextDom。价值="；cTextDom.value="；
+        
+
+超文本标记语言(){函数clearAll(){(){函数clearAll(){
+>(){函数clearAll(){(){函数clearAll函数clearAll){
+Lovelist
+'暂无表白可清空！'
+'暂无表白可清空！'
+            
+如果(确认('确定要清空所有表白和评论吗？ 此操作不可恢复！ ')){如果(确认('确定要清空所有表格和评论吗？ 此操作不可恢复！ ')){(确认('确定要清空所有表白和评论吗？ 此操作不可恢复！ ')){如果(确认('确定要清空所有表格和评论吗？ 此操作不可恢复！ ')){(确认('确定要清空所有表白和评论吗？ 此操作不可恢复！ ')){如果(确认('确定要清空所有表格和评论吗？ 此操作不可恢复！ ')){(确认('确定要清空所有表白和评论吗？ 此操作不可恢复！ ')){如果(确认('确定要清空所有表格和评论吗？ 此操作不可恢复！ ')){
+Lovelist=[]；情人列表=[]；=[]；情人列表=[]；=[]；情人列表=[]；
+saveToLocal()；saveToLocal()；()；saveToLocal()；()；saveToLocal()；()；saveToLocal()；
+renderList()；renderList()；()；renderList()；
+            
+        
+
+// 显示全部// 显示全部
+函数showall
+renderList()；renderList()；()；renderList()；
+        
+
+// 格式化时间// 格式化时间
+函数格式时间(){函数formatTime(){(){功能formatTime(){
+Const
+Const
+Constmonth=线(日期.getMonth()+1).padStart(2，"0")；=线(日期.getMonth()+1).padStart(2，"0")；
+康斯特日=字符串(日期.GETDATE()).padStart(2，"0")；=字符串(日期.GETDATE()).padStart(2，"0")；
+Consthour=线(日期.getHours()).padStart(2，"0")；=字符串(日期.getHours()).padStart(2，"0")；
+常数分钟=字符串(日期.getMinutes()).padStart(2，'0')；=字符串(日期.getMinutes()).padStart(2，"0")；
+年
+        
+
+// 保存到本地存储
+函数saveToLocal(){(){
+localStorage.setitem('Lovelist'，JSON。使字符串化(Lovelist))；(“情人列表”，JSON。使字符串化(Lovelist))；
+        
+
+// 评论输入框聚焦
+函数showCommentInput(身份标识){(身份标识){
+文件。querySelector('.C-text[data-id="${id}"]')。集中()；('.C-text[data-id="${id}"]')。集中()；
+        
+>
+>
+>
