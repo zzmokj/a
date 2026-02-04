@@ -1,39 +1,39 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<元名称=“视口”内容=“宽度=设备宽度，初始比例=1.0”>
-<title>校园表白墙</title>
-<style>
-* {
+超文本标记语言
+<
+>头>头<
+元< 字符集=>"UTF-8"元查集="UTF-8">
+元名称<=“视口”内容=“宽度=设备宽度，初始比例=1.0”>元名称=“视口”内容=“宽度=设备宽度，初始比例=1.0”>
+>标题>校园表白墙<标题>标题</校园表白墙>标题</
+>风格>风格<
+* {{>超文本标记语言
 页边距：0；
 填充：0；
 框大小：边框框；
-字体系列：“Microsoft Yahei”，无衬线；
+字体系列："微软雅黑"，无衬线；雅黑"，无衬线；"微软雅黑"，无衬线；雅黑"，无衬线；
         }
 
-正文{
-背景色：#f5f7fa；
+正文{{{{
+背景色：#f5f7fa；#f5f7fa；#f5f7fa；#f5f7fa；
 填料：20px；
 位置：相对；
         }
 
-.container{
+.container{container{container{container{
 最大宽度：800px；
 页边距：0自动；
         }
 
 /* 新增：最高权限入口 - 左上角 */
-.admin-entrance{
+。admin-entrance{admin-entrance{admin-entrance{admin-entrance{
 位置：固定；
-top:20px；
+顶部：20px；：20px；
 左：20px；
 Z指数：9998；
-背景：#333；
-颜色：#FFF；
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+背景：#333；#333；#333；#333；
+颜色：#FFF；#FFF；#FFF；#FFF；
+宽度：40px；width:40px；：40px；
+高度：40px；高度：40px；：40px；
+边界半径：50%；border-radius:50%；%；border-radius:50%；
             display: flex;
             align-items: center;
             justify-content: center;
